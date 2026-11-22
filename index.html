@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ζ₀: A Framework for World Action Models with Joint Scene and Body Foresight in Humanoid Control</title>
+  <meta name="description" content="ζ₀ turns vision-language-action policies into World Action Models by foreseeing future visual features and measured body trajectories in a shared latent representation, supervised in action space via dual-response transfer." />
+  <meta property="og:title" content="ζ₀: World Action Models with Joint Scene and Body Foresight in Humanoid Control" />
+  <meta property="og:description" content="Consistent gains on HumanoidArena (+18.8 / +9.0 pp) and real-world Unitree G1 tasks (+16.7 / +10.0 pp) across Ψ₀ and GR00T N1.7." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/posters/zeta0_overview_public.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230F172A'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia,serif' font-size='36' font-weight='700' fill='%23FFFFFF'%3E%CE%B6%3C/text%3E%3Ctext x='74%25' y='74%25' dominant-baseline='middle' text-anchor='middle' font-family='Inter,sans-serif' font-size='18' font-weight='700' fill='%235EEAD4'%3E0%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500;1,6..72,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=8" />
+</head>
+<body>
+  <!-- Sticky Top Navigation -->
+  <header class="site-nav" id="siteNav">
+    <div class="nav-inner">
+      <a href="#top" class="nav-brand" aria-label="Zeta-0 Home">
+        <span class="brand-glyph">&zeta;<sub>0</sub></span>
+        <span class="brand-sub">Joint Scene &amp; Body Foresight</span>
+      </a>
+      <nav class="nav-links" aria-label="Section navigation">
+        <a href="#hero-stage">Video</a>
+        <a href="#real-world">Real-World</a>
+        <a href="#simulation">Simulation</a>
+        <a href="#method">Method</a>
+        <a href="#results">Results</a>
+        <a href="#bibtex">BibTeX</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="nav-pdf-btn" href="assets/Zeta0-Humanoid-Full.pdf" target="_blank" rel="noopener">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Paper PDF
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- Hero Header -->
+    <section class="hero-section">
+      <div class="container hero-container">
+        <div class="hero-eyebrow">
+          <span class="eyebrow-dot"></span>
+          World Action Models for Whole-Body Humanoid Control
+        </div>
+
+        <h1 class="hero-title">
+          <span class="title-zeta">&zeta;<sub>0</sub></span>: A Framework for World Action Models with Joint <span class="accent-scene">Scene</span> and <span class="accent-body">Body</span> Foresight in Humanoid Control
+        </h1>
+
+        <!-- Authors (interactive affiliation highlight) -->
+        <div class="authors-block" id="authorsBlock">
+          <div class="authors-list">
+            <span class="author" data-affs="1,2">Yizhi Chen<sup>1,2,*</sup></span>,
+            <span class="author" data-affs="3,2">Zhanxiang Cao<sup>3,2,*</sup></span>,
+            <span class="author" data-affs="3">Yitong Wang<sup>3</sup></span>,
+            <span class="author" data-affs="4">Junyu Liu<sup>4</sup></span>,
+            <span class="author" data-affs="3">Hongchu Zeng<sup>3</sup></span>,
+            <span class="author" data-affs="5,2">Xinyi Peng<sup>5,2</sup></span>,
+            <span class="author" data-affs="6,2">Chuxuan Huang<sup>6,2</sup></span>,
+            <span class="author" data-affs="6">Yicheng Su<sup>6</sup></span>,
+            <span class="author" data-affs="3,2">Zihao Zhou<sup>3,2</sup></span>,
+            <span class="author" data-affs="1,2">Shengcheng Fu<sup>1,2</sup></span>,
+            <span class="author" data-affs="3,2">Haoyang Li<sup>3,2</sup></span>,
+            <span class="author" data-affs="3,2">Liyun Yan<sup>3,2</sup></span>,
+            <span class="author" data-affs="3,2">Tianyue Zhan<sup>3,2</sup></span>,
+            <span class="author" data-affs="3,2">Jianming Ma<sup>3,2</sup></span>,
+            <span class="author" data-affs="3">Yang Zhang<sup>3</sup></span>,
+            <span class="author" data-affs="5,2">Keqi Zhu<sup>5,2</sup></span>,
+            <span class="author" data-affs="3">Xiaxi Si<sup>3</sup></span>,
+            <span class="author" data-affs="7">Jinming Yao<sup>7</sup></span>,
+            <span class="author" data-affs="8">Qiao Sun<sup>8</sup></span>,
+            <span class="author" data-affs="8">Shizeng Zhang<sup>8</sup></span>,
+            <span class="author" data-affs="8">Jiangwei Zhong<sup>8</sup></span>,
+            <span class="author" data-affs="3,2">Yue Gao<sup>3,2,&dagger;</sup></span>
+          </div>
+          <div class="affiliations-logos" aria-label="Affiliated institutions">
+            <div class="aff-item aff-card" data-aff="1" title="Tongji University">
+              <sup>1</sup>
+              <img class="aff-emblem" src="assets/logos/tongji.png" alt="Tongji University logo" />
+              <span class="aff-name">Tongji University</span>
+            </div>
+            <div class="aff-item aff-card aff-lockup" data-aff="2" title="Shanghai Innovation Institute">
+              <sup>2</sup>
+              <img class="aff-wordmark aff-sii" src="assets/logos/sii.svg" alt="Shanghai Innovation Institute logo" />
+            </div>
+            <div class="aff-item aff-card" data-aff="3" title="Shanghai Jiao Tong University">
+              <sup>3</sup>
+              <img class="aff-emblem" src="assets/logos/sjtu.svg" alt="Shanghai Jiao Tong University logo" />
+              <span class="aff-name">Shanghai Jiao Tong University</span>
+            </div>
+            <div class="aff-item aff-card" data-aff="4" title="Shanghai University">
+              <sup>4</sup>
+              <img class="aff-emblem aff-shu" src="assets/logos/shu.svg" alt="Shanghai University logo" />
+              <span class="aff-name">Shanghai University</span>
+            </div>
+            <div class="aff-item aff-card" data-aff="5" title="Zhejiang University">
+              <sup>5</sup>
+              <img class="aff-emblem" src="assets/logos/zju.svg" alt="Zhejiang University logo" />
+              <span class="aff-name">Zhejiang University</span>
+            </div>
+            <div class="aff-item aff-card" data-aff="6" title="Fudan University">
+              <sup>6</sup>
+              <img class="aff-emblem" src="assets/logos/fudan.svg" alt="Fudan University logo" />
+              <span class="aff-name">Fudan University</span>
+            </div>
+            <div class="aff-item aff-card aff-lockup" data-aff="7" title="University of Science and Technology of China">
+              <sup>7</sup>
+              <img class="aff-wordmark aff-ustc" src="assets/logos/ustc.svg" alt="USTC logo" />
+            </div>
+            <div class="aff-item aff-card aff-lockup" data-aff="8" title="Lenovo Group Limited">
+              <sup>8</sup>
+              <img class="aff-wordmark aff-lenovo" src="assets/logos/lenovo.svg" alt="Lenovo logo" />
+            </div>
+          </div>
+          <div class="author-notes">
+            <span><sup>*</sup>Equal contribution</span>
+            <span class="note-sep">&middot;</span>
+            <span><sup>&dagger;</sup>Corresponding author</span>
+          </div>
+        </div>
+
+        <!-- Primary Action Links -->
+        <div class="cta-row">
+          <a class="cta-btn cta-primary" href="assets/Zeta0-Humanoid-Full.pdf" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <span>Paper PDF</span>
+            <span class="cta-meta">18 pp</span>
+          </a>
+
+          <button class="cta-btn cta-secondary cta-soon" type="button" data-toast="arXiv link will be updated upon posting.">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            <span>arXiv</span>
+            <span class="cta-badge">Coming Soon</span>
+          </button>
+
+          <button class="cta-btn cta-secondary cta-soon" type="button" data-toast="Code and model checkpoints will be released publicly.">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            <span>Code &amp; Models</span>
+            <span class="cta-badge">Coming Soon</span>
+          </button>
+
+          <button class="cta-btn cta-secondary" type="button" id="jumpOverviewVideo">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span>Demo Video</span>
+            <span class="cta-meta">3:00</span>
+          </button>
+
+          <a class="cta-btn cta-secondary" href="#bibtex">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            <span>BibTeX</span>
+          </a>
+        </div>
+
+        <!-- Compact Key Metric Strip -->
+        <div class="metrics-strip">
+          <div class="metric-card">
+            <div class="metric-value">
+              <span class="m-num accent-scene">79.5%</span>
+              <span class="m-delta">+9.0 / +18.8 pp</span>
+            </div>
+            <div class="metric-label">HumanoidArena 7-Task Mean</div>
+            <div class="metric-sub">GR00T N1.7 &amp; &Psi;<sub>0</sub> &middot; top joint policy</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">
+              <span class="m-num accent-body">85.0%</span>
+              <span class="m-delta">+10.0 / +16.7 pp</span>
+            </div>
+            <div class="metric-label">Real-World Unitree G1 (6 Tasks)</div>
+            <div class="metric-sub">300 physical trials &middot; +26.7 pp multi-stage (&Psi;<sub>0</sub>)</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">
+              <span class="m-num">4.5&deg;</span>
+              <span class="m-delta">vs. 9.4&deg; hold</span>
+            </div>
+            <div class="metric-label">29-Joint Body Forecast (+0.6 s)</div>
+            <div class="metric-sub">Beats pose persistence in 83.5% of 526 windows</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">
+              <span class="m-num">212 ms</span>
+              <span class="m-delta">6.3 GiB</span>
+            </div>
+            <div class="metric-label">Closed-Loop Policy Latency</div>
+            <div class="metric-sub">Single RTX 4090 &middot; 1 forecast / action chunk</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FLAGSHIP HERO VIDEO STAGE -->
+    <section class="section-stage" id="hero-stage">
+      <div class="container">
+        <div class="stage-header-bar">
+          <div class="stage-tabs" role="tablist" aria-label="Hero showcase video modes">
+            <button class="stage-tab active" role="tab" aria-selected="true" data-hero-mode="overview">
+              <span class="tab-dot dot-amber"></span>
+              3-Min Narrated Overview
+            </button>
+            <button class="stage-tab" role="tab" aria-selected="false" data-hero-mode="mechanism">
+              <span class="tab-dot dot-body"></span>
+              Whole-Body Foresight (4K)
+            </button>
+            <button class="stage-tab" role="tab" aria-selected="false" data-hero-mode="rollout">
+              <span class="tab-dot dot-scene"></span>
+              5-Stage Autonomous Rollout
+            </button>
+          </div>
+          <div class="stage-meta-pill" id="heroMetaBadge">1080p &middot; 3:00 &middot; English Narration &amp; Subtitles</div>
+        </div>
+
+        <div class="cinema-shell" id="heroCinema">
+          <div class="cinema-viewport paused">
+            <video
+              id="heroVideo"
+              class="cinema-video"
+              src="assets/videos/zeta0_overview_public.mp4"
+              poster="assets/posters/zeta0_overview_public.jpg"
+              playsinline
+              preload="metadata"
+            ></video>
+
+            <!-- Clickable Play Overlay (shown when paused) -->
+            <button class="cinema-play-overlay" id="heroPlayOverlay" aria-label="Play video">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+            </button>
+
+            <!-- Top-left floating caption pill -->
+            <div class="cinema-badge-tl" id="heroBadgeTL">
+              <span class="pulse-dot"></span>
+              <span id="heroCaptionTitle">Full Narrated Presentation (3:00)</span>
+            </div>
+          </div>
+
+          <!-- Docked Studio HUD Controls (never overlaps subtitles or in-video StageBar) -->
+          <div class="cinema-hud cinema-hud-docked" id="heroHud">
+            <div class="hud-progress-wrap" id="heroProgressWrap" title="Seek">
+              <div class="hud-progress-track">
+                <div class="hud-progress-fill" id="heroProgressFill"></div>
+              </div>
+              <div class="hud-chapter-ticks" id="heroChapterTicks"></div>
+            </div>
+            <div class="hud-row">
+              <div class="hud-left">
+                <button class="hud-btn" id="heroPlayBtn" aria-label="Play or pause">
+                  <svg class="icon-pause" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+                  <svg class="icon-play" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                </button>
+                <button class="hud-btn" id="heroMuteBtn" aria-label="Mute or unmute">
+                  <svg class="icon-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                  <svg class="icon-unmuted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                </button>
+                <span class="hud-time" id="heroTime">0:00 / 3:00</span>
+              </div>
+              <div class="hud-right">
+                <div class="speed-group" data-speed-for="hero">
+                  <button class="speed-btn" data-rate="0.5">0.5&times;</button>
+                  <button class="speed-btn active" data-rate="1">1&times;</button>
+                  <button class="speed-btn" data-rate="1.5">1.5&times;</button>
+                  <button class="speed-btn" data-rate="2">2&times;</button>
+                </div>
+                <button class="hud-btn" id="heroFullscreenBtn" aria-label="Fullscreen">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chapter jump strip (visible by default for 3-min overview) -->
+          <div class="chapter-strip" id="heroChapterStrip">
+            <span class="chapter-label">Chapters:</span>
+            <button class="chapter-pill active" data-seek="0">0:00 Hook</button>
+            <button class="chapter-pill" data-seek="13.8">0:14 Motivation</button>
+            <button class="chapter-pill" data-seek="36.6">0:37 Foresight</button>
+            <button class="chapter-pill" data-seek="47.6">0:48 Method</button>
+            <button class="chapter-pill" data-seek="91.1">1:31 Simulation</button>
+            <button class="chapter-pill" data-seek="118.7">1:59 Real-World</button>
+            <button class="chapter-pill" data-seek="148.4">2:28 Results &amp; Ablations</button>
+          </div>
+
+          <!-- Editorial footer under cinema -->
+          <div class="cinema-caption-bar">
+            <p id="heroDesc">
+              Complete 3-minute walkthrough of <strong>&zeta;<sub>0</sub></strong>: motivation, joint scene-and-body future latent representation, dual-response transfer, HumanoidArena simulation, six real-world Unitree G1 tasks, and ablation analysis.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REAL-WORLD UNITREE G1 VIDEO THEATER -->
+    <section class="section-band band-alt" id="real-world">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Physical Unitree G1 &middot; 300 Autonomous Trials</div>
+            <h2 class="section-title">Real-World Whole-Body Demonstrations</h2>
+          </div>
+          <div class="filter-pills" id="realFilterPills" role="tablist" aria-label="Filter real-world tasks">
+            <button class="filter-pill active" data-filter="all">All Tasks <span class="pill-count">6</span></button>
+            <button class="filter-pill" data-filter="multi">Multi-Stage Long-Horizon <span class="pill-count">3</span></button>
+            <button class="filter-pill" data-filter="single">Single-Stage Precision <span class="pill-count">3</span></button>
+          </div>
+        </div>
+        <p class="section-lead">
+          All five policies share three RGB cameras (head + dual wrists), 41-D measured state, and the SONIC whole-body controller. Across all six tasks, &zeta;<sub>0</sub> reaches <strong>78.3%</strong> on &Psi;<sub>0</sub> (+16.7 pp) and <strong>85.0%</strong> on GR00T N1.7 (+10.0 pp), with the largest gains on multi-stage long-horizon tasks (+26.7 pp on &Psi;<sub>0</sub>; +13.3 pp on GR00T).
+        </p>
+
+        <!-- Master Split Cinema Theater -->
+        <div class="real-theater">
+          <div class="real-player-col">
+            <div class="cinema-viewport real-viewport">
+              <video
+                id="realMainVideo"
+                class="cinema-video"
+                src="assets/videos/real_01_tidy_scene.mp4?v=4"
+                poster="assets/posters/real_01_tidy_scene.jpg?v=4"
+                muted
+                loop
+                playsinline
+                preload="metadata"
+              ></video>
+              <button class="cinema-play-overlay" id="realPlayOverlay" aria-label="Play real-world demo">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+              </button>
+
+              <!-- Prev / Next quick arrows -->
+              <button class="stage-nav-arrow prev" id="realPrevBtn" aria-label="Previous task">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"/></svg>
+              </button>
+              <button class="stage-nav-arrow next" id="realNextBtn" aria-label="Next task">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </div>
+
+            <!-- Docked Studio HUD (sits cleanly below the video, zero overlap with V4 StageBar) -->
+            <div class="cinema-hud cinema-hud-docked" id="realHud">
+              <div class="hud-progress-wrap" id="realProgressWrap" title="Seek">
+                <div class="hud-progress-track">
+                  <div class="hud-progress-fill" id="realProgressFill"></div>
+                </div>
+              </div>
+              <div class="hud-row">
+                <div class="hud-left">
+                  <button class="hud-btn" id="realPlayBtn" aria-label="Play or pause">
+                    <svg class="icon-pause" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+                    <svg class="icon-play" width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style="display:none"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                  </button>
+                  <span class="hud-time" id="realTime">0:00 / 0:19</span>
+                  <span class="hud-pip-tag">3rd-person + Head/Wrist PiP</span>
+                </div>
+                <div class="hud-right">
+                  <div class="speed-group" data-speed-for="real">
+                    <button class="speed-btn" data-rate="0.5">0.5&times;</button>
+                    <button class="speed-btn active" data-rate="1">1&times;</button>
+                    <button class="speed-btn" data-rate="1.5">1.5&times;</button>
+                    <button class="speed-btn" data-rate="2">2&times;</button>
+                  </div>
+                  <button class="hud-btn" id="realFullscreenBtn" aria-label="Fullscreen">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Telemetry & Task Detail Panel -->
+          <aside class="real-info-panel" id="realInfoPanel">
+            <div class="info-top">
+              <div class="info-badges">
+                <span class="tag-pill tag-multi" id="realCategoryBadge">Multi-Stage &middot; Long-Horizon</span>
+                <span class="tag-pill tag-neutral" id="realDemosBadge">200 demos</span>
+              </div>
+              <h3 class="info-title" id="realTaskTitle">Tidy Scene</h3>
+              <div class="info-prompt">
+                <span class="prompt-label">Instruction</span>
+                <code id="realTaskPrompt">"Tidy up the scene."</code>
+              </div>
+            </div>
+
+            <div class="info-stages">
+              <div class="sub-label">Autonomous Execution Stages</div>
+              <div class="stage-chips" id="realStageChips"></div>
+            </div>
+
+            <div class="info-criterion">
+              <div class="sub-label">Success Criterion</div>
+              <p id="realTaskCriterion"></p>
+            </div>
+
+            <div class="info-scores">
+              <div class="sub-label-row">
+                <span class="sub-label">Success Rate (10 trials / policy)</span>
+                <span class="sub-hint">Randomized poses</span>
+              </div>
+              <div class="mini-bars" id="realMiniBars"></div>
+            </div>
+          </aside>
+        </div>
+
+        <!-- 6-Task Interactive Filmstrip (hover-to-preview!) -->
+        <div class="real-filmstrip" id="realFilmstrip" aria-label="Select a real-world task"></div>
+      </div>
+    </section>
+
+    <!-- HUMANOIDARENA SIMULATION — SYNCHRONIZED DUAL-VIEW EXPLORER -->
+    <section class="section-band" id="simulation">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">HumanoidArena Benchmark &middot; 1 Shared 7-Task Policy</div>
+            <h2 class="section-title">Simulation: Synchronized Dual-View Explorer</h2>
+          </div>
+          <div class="view-mode-switch" role="tablist" aria-label="Simulation view mode">
+            <button class="mode-btn active" data-sim-mode="dual">Synchronized Dual-View</button>
+            <button class="mode-btn" data-sim-mode="grid">7-Task Simultaneous Grid</button>
+          </div>
+        </div>
+        <p class="section-lead">
+          Inspect why egocentric visual foresight alone falls short: the head camera sees forearms and objects ahead, while the robot&rsquo;s <strong>legs, torso, and foot contact lie outside the field of view</strong>. &zeta;<sub>0</sub> jointly forecasts scene dynamics and all 29 body joints from causal inputs.
+        </p>
+
+        <!-- Mode A: Synchronized Dual-View Inspector -->
+        <div id="simDualPanel">
+          <div class="sim-task-tabs" id="simTaskTabs" role="tablist" aria-label="HumanoidArena tasks"></div>
+
+          <div class="dual-cinema-shell">
+            <div class="dual-grid">
+              <div class="dual-pane dual-pane-third">
+                <div class="dual-pane-label">
+                  <span class="pane-dot dot-body"></span>
+                  Third-Person Whole-Body View
+                  <span class="pane-note">Observer camera (not fed to policy)</span>
+                </div>
+                <div class="dual-video-wrap">
+                  <video id="simThirdVideo" class="dual-video" muted loop playsinline preload="metadata"></video>
+                </div>
+              </div>
+              <div class="dual-pane dual-pane-first">
+                <div class="dual-pane-label">
+                  <span class="pane-dot dot-scene"></span>
+                  Egocentric Head-Camera Input
+                  <span class="pane-note">Exact visual input to &zeta;<sub>0</sub> &mdash; legs out of FOV</span>
+                </div>
+                <div class="dual-video-wrap">
+                  <video id="simFirstVideo" class="dual-video" muted loop playsinline preload="metadata"></video>
+                </div>
+              </div>
+            </div>
+
+            <!-- Unified Master Sync Transport -->
+            <div class="dual-transport">
+              <button class="hud-btn" id="simPlayBtn" aria-label="Play or pause synchronized views">
+                <svg class="icon-pause" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+                <svg class="icon-play" width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style="display:none"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+              </button>
+              <span class="hud-time" id="simTime">0:00 / 0:00</span>
+              <div class="hud-progress-wrap dual-scrubber" id="simProgressWrap">
+                <div class="hud-progress-track">
+                  <div class="hud-progress-fill" id="simProgressFill"></div>
+                </div>
+              </div>
+              <div class="speed-group" data-speed-for="sim">
+                <button class="speed-btn" data-rate="0.5">0.5&times;</button>
+                <button class="speed-btn active" data-rate="1">1&times;</button>
+                <button class="speed-btn" data-rate="1.5">1.5&times;</button>
+                <button class="speed-btn" data-rate="2">2&times;</button>
+              </div>
+            </div>
+
+            <!-- Per-task Telemetry Strip -->
+            <div class="sim-telemetry-strip" id="simTelemetryStrip"></div>
+          </div>
+        </div>
+
+        <!-- Mode B: 7-Task Grid Video -->
+        <div id="simGridPanel" hidden>
+          <div class="cinema-shell">
+            <div class="cinema-viewport" id="simGridViewport">
+              <video
+                id="simGridVideo"
+                class="cinema-video"
+                src="assets/videos/sim_00_7tasks_grid.mp4?v=4"
+                poster="assets/posters/sim_00_7tasks_grid.jpg?v=4"
+                muted
+                loop
+                playsinline
+                preload="metadata"
+              ></video>
+              <button class="cinema-play-overlay" id="simGridPlayOverlay" aria-label="Play 7-task grid">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+              </button>
+            </div>
+            <div class="cinema-hud cinema-hud-docked" id="simGridHud">
+              <div class="hud-progress-wrap" id="simGridProgressWrap" title="Seek">
+                <div class="hud-progress-track">
+                  <div class="hud-progress-fill" id="simGridProgressFill"></div>
+                </div>
+              </div>
+              <div class="hud-row">
+                <div class="hud-left">
+                  <button class="hud-btn" id="simGridPlayBtn" aria-label="Play or pause">
+                    <svg class="icon-pause" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+                    <svg class="icon-play" width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style="display:none"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                  </button>
+                  <span class="hud-time" id="simGridTime">0:00 / 0:15</span>
+                  <span class="hud-pip-tag">7 HumanoidArena Tasks &middot; Shared Policy</span>
+                </div>
+                <div class="hud-right">
+                  <div class="speed-group" data-speed-for="simgrid">
+                    <button class="speed-btn" data-rate="0.5">0.5&times;</button>
+                    <button class="speed-btn active" data-rate="1">1&times;</button>
+                    <button class="speed-btn" data-rate="1.5">1.5&times;</button>
+                    <button class="speed-btn" data-rate="2">2&times;</button>
+                  </div>
+                  <button class="hud-btn" id="simGridFullscreenBtn" aria-label="Fullscreen">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="cinema-caption-bar">
+              <p>
+                <strong>One shared &zeta;<sub>0</sub> (GR00T) policy</strong> trained jointly on 700 demonstrations (100 per task, 40k updates) executes all seven HumanoidArena tasks with synchronized head-camera insets, achieving <strong>79.5%</strong> mean success across 420 closed-loop episodes.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- METHOD & OVERVIEW -->
+    <section class="section-band band-alt" id="method">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Architecture &amp; Training Objective</div>
+            <h2 class="section-title">How &zeta;<sub>0</sub> Works</h2>
+          </div>
+        </div>
+
+        <!-- Abstract Callout -->
+        <div class="abstract-card">
+          <div class="abstract-tag">Abstract</div>
+          <p>
+            World Action Models anticipate visual outcomes to guide robot actions, yet humanoid interaction also depends on how the robot&rsquo;s body responds. Visual foresight alone can miss body motion, while latent-distance losses do not directly supervise action responses. We present <strong>&zeta;<sub>0</sub></strong>, a framework that turns vision-language-action policies into World Action Models by foreseeing future visual features and measured joint trajectories in a shared latent representation. During training, a teacher conditioned on recorded futures provides a reference action response, and <strong>dual-response transfer</strong> trains the causal predictor to match it through both the teacher and the executing policy. All components are trained jointly, and deployment uses only causally predicted futures.
+          </p>
+        </div>
+
+        <!-- High-res Method Diagram (clickable zoom) -->
+        <figure class="paper-figure-card">
+          <div class="figure-frame zoomable" data-zoom-src="assets/figures/fig2_method.png" data-zoom-caption="Figure 2: Overview of ζ₀ — joint scene-and-body future latent representation, dual-response transfer (training only), and lightweight causal deployment.">
+            <img src="assets/figures/fig2_method.png" alt="Overview of the Zeta-0 framework showing training and deployment pathways" loading="lazy" />
+            <span class="zoom-hint">Click to enlarge</span>
+          </div>
+          <figcaption>
+            <strong>Figure 2. Overview of &zeta;<sub>0</sub>.</strong>
+            <em>Bottom (deployed):</em> the base VLM encodes the instruction and current view; conditioner <em>H</em> and shared predictor <em>F</em> predict a latent future <em>z&#770;<sub>t</sub></em> across three temporal groups (+0.2 / +0.4 / +0.6 s) to condition executing policy <em>G</em>.
+            <em>Top (training only):</em> encoder <em>E</em> (with EMA target) summarizes recorded future visual features and 29-joint body trajectories; teacher <em>T</em> defines a reference action response <em>v</em><sub>ref</sub>, and dual-response transfer supervises <em>z&#770;<sub>t</sub></em> through locked readers <em>T</em><sub>fix</sub> and <em>G</em><sub>fix</sub>.
+          </figcaption>
+        </figure>
+
+        <!-- 3 Core Pillars -->
+        <div class="pillars-grid">
+          <div class="pillar-card pillar-scene">
+            <div class="pillar-num">01</div>
+            <h3>Shared Scene &amp; Body Future Latent</h3>
+            <p>
+              Encodes future post-merger visual features and 50 Hz measured 29-joint body trajectories (14 arm, 12 leg, 3 waist) into 3 &times; 8 &times; 256 tokens spanning +0.2, +0.4, and +0.6 s. Captures real contact and balance rather than commanded actions alone.
+            </p>
+          </div>
+          <div class="pillar-card pillar-amber">
+            <div class="pillar-num">02</div>
+            <h3>Dual-Response Transfer in Action Space</h3>
+            <p>
+              Equal latent-distance errors can induce vastly different actions. A privileged recorded-future teacher <em>T</em> provides a reference flow velocity <em>v</em><sub>ref</sub>; matching it through both locked <em>T</em><sub>fix</sub> and deployed <em>G</em><sub>fix</sub> aligns predicted foresight directly with control.
+            </p>
+          </div>
+          <div class="pillar-card pillar-body">
+            <div class="pillar-num">03</div>
+            <h3>Base-Agnostic &amp; Lightweight Deployment</h3>
+            <p>
+              Attaches cleanly to distinct VLA architectures&mdash;an 8-layer flow head (&Psi;<sub>0</sub>) and a 32-layer DiT cross-attention head (GR00T N1.7). At inference, <em>E</em>, EMA, <em>D</em>, and <em>T</em> drop away; <em>F</em> runs once per action chunk (212 ms on one RTX 4090).
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INTERACTIVE QUANTITATIVE RESULTS & EVIDENCE -->
+    <section class="section-band" id="results">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Quantitative Evaluation &amp; Analysis</div>
+            <h2 class="section-title">Benchmarks, Ablations &amp; Body Foresight</h2>
+          </div>
+          <div class="results-tabs" id="resultsTabs" role="tablist" aria-label="Result categories">
+            <button class="res-tab active" data-res-tab="sim-table">HumanoidArena (7 Tasks)</button>
+            <button class="res-tab" data-res-tab="real-table">Real-World (6 Tasks)</button>
+            <button class="res-tab" data-res-tab="ablations">Component Ablations</button>
+            <button class="res-tab" data-res-tab="body-forecast">Body Forecast (526 Win.)</button>
+          </div>
+        </div>
+
+        <!-- TAB 1: HumanoidArena 7-Task Benchmark -->
+        <div class="res-panel active" id="panel-sim-table">
+          <div class="panel-summary-row">
+            <div class="summary-callout">
+              <strong>Key Finding:</strong> On seven HumanoidArena tasks (420 closed-loop episodes per policy), &zeta;<sub>0</sub> lifts &Psi;<sub>0</sub> by <strong>+18.8 pp</strong> (44.8% &rarr; 63.6%) and GR00T N1.7 by <strong>+9.0 pp</strong> (70.5% &rarr; 79.5%), topping every compared seven-task joint policy.
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table class="data-table" id="simBenchmarkTable">
+              <thead>
+                <tr>
+                  <th>Policy</th>
+                  <th>Double desk</th>
+                  <th>Football</th>
+                  <th>Box</th>
+                  <th>Boxing</th>
+                  <th>Open door</th>
+                  <th>Sit sofa</th>
+                  <th>Navigation</th>
+                  <th class="col-mean">Mean (%)</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p class="table-footnote">
+            Published rows retain source-specific settings (<sup>&ddagger;</sup> average over base + 3 OOD modes; <sup>*</sup> additional policy pretraining). Our runs (bottom six rows) share 700 demonstrations, 40,000 updates, SONIC low-level control, and 60 episodes/task across scenario seeds 0, 1, 2.
+          </p>
+        </div>
+
+        <!-- TAB 2: Real-World 6-Task Breakdown -->
+        <div class="res-panel" id="panel-real-table">
+          <div class="real-stage-callout">
+            <div class="stage-stat">
+              <div class="stage-stat-title">Single-Stage Tasks (30 trials/policy)</div>
+              <div class="stage-stat-desc">Hair drying &middot; Push chair &middot; Place doll</div>
+              <div class="stage-stat-nums">All 5 policies reach <strong>80.0%&ndash;93.3%</strong> (&zeta;<sub>0</sub> hits <strong>93.3%</strong> on both bases)</div>
+            </div>
+            <div class="stage-stat highlight-stat">
+              <div class="stage-stat-title">Multi-Stage Long-Horizon Tasks (30 trials/policy)</div>
+              <div class="stage-stat-desc">Clear table &middot; Avoid obstacle &middot; Tidy scene</div>
+              <div class="stage-stat-nums">
+                &Psi;<sub>0</sub>: 36.7% &rarr; <strong class="accent-scene">63.3% (+26.7 pp)</strong> &nbsp;|&nbsp;
+                GR00T: 63.3% &rarr; <strong class="accent-body">76.7% (+13.3 pp)</strong>
+              </div>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table class="data-table" id="realBenchmarkTable">
+              <thead>
+                <tr>
+                  <th>Policy</th>
+                  <th>Hair drying</th>
+                  <th>Push chair</th>
+                  <th>Clear table</th>
+                  <th>Avoid obst.</th>
+                  <th>Place doll</th>
+                  <th>Tidy scene</th>
+                  <th class="col-mean">Mean (%)</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p class="table-footnote">
+            Success counts out of 10 randomized physical trials per task (60 trials per policy; 300 total). All five policies train separately per task on identical demonstrations for 20,000 updates.
+          </p>
+        </div>
+
+        <!-- TAB 3: Component Ablations -->
+        <div class="res-panel" id="panel-ablations">
+          <div class="ablation-top-bar">
+            <p class="ablation-intro">
+              Every ablated component reduces seven-task mean success on <em>both</em> bases (420 episodes/setting). Removing future conditioning (<strong>w/o FC</strong>) causes the largest drop on &Psi;<sub>0</sub> (&minus;16.4 pp), while removing body futures (<strong>w/o BF</strong>) causes the largest drop on GR00T (&minus;6.4 pp), concentrated in contact-rich tasks (&minus;10.0 to &minus;13.3 pp).
+            </p>
+            <div class="base-toggle" id="ablationBaseToggle">
+              <button class="base-btn active" data-base="groot">&zeta;<sub>0</sub> (GR00T N1.7)</button>
+              <button class="base-btn" data-base="psi0">&zeta;<sub>0</sub> (&Psi;<sub>0</sub>)</button>
+            </div>
+          </div>
+          <div class="ablation-chart" id="ablationChart"></div>
+
+          <div class="fig-duo-grid">
+            <figure class="paper-figure-card compact">
+              <div class="figure-frame zoomable" data-zoom-src="assets/figures/figS3_ablation_heatmap.png" data-zoom-caption="Figure S3: Per-task ablation heatmap relative to the full ζ₀ model on both Ψ₀ and GR00T N1.7.">
+                <img src="assets/figures/figS3_ablation_heatmap.png" alt="Per-task ablation heatmap for both bases" loading="lazy" />
+                <span class="zoom-hint">Click to enlarge</span>
+              </div>
+              <figcaption><strong>Per-task ablation heatmap (Fig. S3).</strong> Success-rate change in percentage points relative to the full model on each base.</figcaption>
+            </figure>
+            <figure class="paper-figure-card compact">
+              <div class="figure-frame zoomable" data-zoom-src="assets/figures/figS4_synergy.png" data-zoom-caption="Figure S4: Cross-benchmark gains across 13 tasks (24/26 pairs improved or matched), task selectivity of body vs. future conditioning, and dual-response reader profiles.">
+                <img src="assets/figures/figS4_synergy.png" alt="Cross-benchmark gains and dual-response reader synergy" loading="lazy" />
+                <span class="zoom-hint">Click to enlarge</span>
+              </div>
+              <figcaption><strong>Cross-benchmark gains &amp; reader synergy (Fig. S4).</strong> &zeta;<sub>0</sub> improves or matches its base in 24 of 26 simulation &amp; real-world task pairs.</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <!-- TAB 4: Body-Forecast Quantitative Evidence -->
+        <div class="res-panel" id="panel-body-forecast">
+          <div class="forecast-kpis">
+            <div class="fkpi">
+              <span class="fkpi-val accent-body">3.92&deg;</span>
+              <span class="fkpi-cmp">vs. 7.60&deg; hold</span>
+              <span class="fkpi-lbl">Pooled 0&ndash;0.6 s RMSE (29 joints)</span>
+            </div>
+            <div class="fkpi">
+              <span class="fkpi-val accent-body">4.53&deg;</span>
+              <span class="fkpi-cmp">vs. 9.36&deg; hold</span>
+              <span class="fkpi-lbl">Endpoint +0.6 s RMSE</span>
+            </div>
+            <div class="fkpi">
+              <span class="fkpi-val accent-scene">5.23&deg;</span>
+              <span class="fkpi-cmp">vs. 12.54&deg; hold</span>
+              <span class="fkpi-lbl">12 Leg Joints (+0.6 s, out of FOV)</span>
+            </div>
+            <div class="fkpi">
+              <span class="fkpi-val">83.5%</span>
+              <span class="fkpi-cmp">439 / 526 windows</span>
+              <span class="fkpi-lbl">Win Rate vs. Pose Persistence</span>
+            </div>
+          </div>
+
+          <div class="fig-duo-grid">
+            <figure class="paper-figure-card compact">
+              <div class="figure-frame zoomable" data-zoom-src="assets/figures/fig3_body_readout.png" data-zoom-caption="Figure 3: Causal body-future predictions rendered in scene across all seven HumanoidArena tasks, plus 29-joint RMSE over the 0.6 s horizon.">
+                <img src="assets/figures/fig3_body_readout.png" alt="Body forecast rendered in scenes across seven HumanoidArena tasks" loading="lazy" />
+                <span class="zoom-hint">Click to enlarge</span>
+              </div>
+              <figcaption><strong>In-scene whole-body forecasts (Fig. 3).</strong> Predicted +0.2 / +0.4 / +0.6 s poses overlaid with the measured +0.6 s outline across seven tasks.</figcaption>
+            </figure>
+            <figure class="paper-figure-card compact">
+              <div class="figure-frame zoomable" data-zoom-src="assets/figures/figS5_body_forecast.png" data-zoom-caption="Figure S5: 8-second closed-loop joint trajectories, egocentric blind-spot comparison, limb-group RMSE, and per-task accuracy across 526 windows.">
+                <img src="assets/figures/figS5_body_forecast.png" alt="Closed-loop joint trajectory forecasts and per-limb RMSE breakdown" loading="lazy" />
+                <span class="zoom-hint">Click to enlarge</span>
+              </div>
+              <figcaption><strong>Closed-loop joint trajectories &amp; limb breakdown (Fig. S5).</strong> Legs incur the largest drift when occluded and gain the largest error reduction.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BIBTEX -->
+    <section class="section-band band-alt" id="bibtex">
+      <div class="container container-narrow">
+        <div class="bibtex-header">
+          <div>
+            <div class="section-kicker">Citation</div>
+            <h2 class="section-title">BibTeX</h2>
+          </div>
+          <button class="copy-btn" id="copyBibtexBtn" type="button">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span id="copyBibtexLabel">Copy BibTeX</span>
+          </button>
+        </div>
+        <pre class="bibtex-block" id="bibtexCode">@article{chen2026zeta0,
+  title   = {$\zeta_0$: A Framework for World Action Models with Joint Scene and Body Foresight in Humanoid Control},
+  author  = {Chen, Yizhi and Cao, Zhanxiang and Wang, Yitong and Liu, Junyu and Zeng, Hongchu and Peng, Xinyi and Huang, Chuxuan and Su, Yicheng and Zhou, Zihao and Fu, Shengcheng and Li, Haoyang and Yan, Liyun and Zhan, Tianyue and Ma, Jianming and Zhang, Yang and Zhu, Keqi and Si, Xiaxi and Yao, Jinming and Sun, Qiao and Zhang, Shizeng and Zhong, Jiangwei and Gao, Yue},
+  journal = {arXiv preprint},
+  year    = {2026}
+}</pre>
+      </div>
+    </section>
+  </main>
+
+  <!-- Minimalist Footer -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="brand-glyph">&zeta;<sub>0</sub></span>
+        <span>Joint Scene and Body Foresight in Humanoid Control</span>
+      </div>
+      <div class="footer-links">
+        <a href="assets/Zeta0-Humanoid-Full.pdf" target="_blank" rel="noopener">Paper PDF</a>
+        <a href="#hero-stage">Video Showcase</a>
+        <a href="#real-world">Real-World</a>
+        <a href="#simulation">Simulation</a>
+        <a href="#top">Back to top &uarr;</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Full-Screen Image Lightbox -->
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close enlarged figure">&times;</button>
+    <div class="lightbox-content">
+      <img id="lightboxImg" src="" alt="" />
+      <p id="lightboxCaption"></p>
+    </div>
+  </div>
+
+  <!-- Subtle Toast Notification -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js?v=7"></script>
+</body>
+</html>
