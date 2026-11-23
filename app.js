@@ -13,16 +13,6 @@
   // 1. Verified Paper Data (exact numbers from Zeta0-Humanoid-Full.pdf)
   // ------------------------------------------------------------------------
   const HERO_MODES = {
-    mechanism: {
-      src: "assets/videos/00_mechanism_visual_4k.mp4",
-      poster: "assets/posters/00_mechanism_visual_4k.jpg",
-      meta: "4K · Conceptual Mechanism",
-      badge: "Causal Whole-Body Foresight — Conceptual Visualization",
-      desc: "From current egocentric vision and proprioception alone, <strong>ζ<sub>0</sub></strong> anticipates future scene features and 29 measured body joints over +0.2 / +0.4 / +0.6 s to condition whole-body action generation. <em>(Conceptual illustration of foresight; see quantitative closed-loop body predictions below.)</em>",
-      muted: true,
-      loop: true,
-      chapters: false
-    },
     rollout: {
       src: "assets/videos/real_01_tidy_scene.mp4?v=4",
       poster: "assets/posters/real_01_tidy_scene.jpg?v=4",
