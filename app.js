@@ -34,11 +34,11 @@
       chapters: false
     },
     overview: {
-      src: "assets/videos/zeta0_overview_public.mp4",
-      poster: "assets/posters/zeta0_overview_public.jpg",
-      meta: "1080p · 3:00 · English Narration & Subtitles",
-      badge: "Full Narrated Presentation (3:00)",
-      desc: "Complete 3-minute walkthrough of <strong>ζ<sub>0</sub></strong>: motivation, joint scene-and-body future latent representation, dual-response transfer, HumanoidArena simulation, six real-world Unitree G1 tasks, and ablation analysis.",
+      src: "assets/videos/zeta0_overview_public.mp4?v=10",
+      poster: "assets/posters/zeta0_overview_public.jpg?v=10",
+      meta: "1080p · 2:24 · English Narration & Subtitles",
+      badge: "Full Narrated Presentation (2:24)",
+      desc: "Complete narrated walkthrough of <strong>ζ<sub>0</sub></strong>: motivation, joint scene-and-body future latent representation, dual-response transfer, HumanoidArena simulation, six real-world Unitree G1 tasks, and ablation analysis.",
       muted: false,
       loop: false,
       chapters: true
@@ -47,12 +47,13 @@
 
   const OVERVIEW_CHAPTERS = [
     { t: 0,     label: "Hook" },
-    { t: 13.8,  label: "Motivation" },
-    { t: 36.6,  label: "Foresight" },
-    { t: 47.6,  label: "Method" },
-    { t: 91.1,  label: "Simulation" },
-    { t: 118.7, label: "Real-World" },
-    { t: 148.4, label: "Results" }
+    { t: 12.4,  label: "Motivation" },
+    { t: 32.2,  label: "Foresight" },
+    { t: 39.6,  label: "Method" },
+    { t: 71.6,  label: "Simulation" },
+    { t: 83.4,  label: "Body Forecast" },
+    { t: 92.6,  label: "Real-World" },
+    { t: 117.8, label: "Results" }
   ];
 
   const REAL_TASKS = [

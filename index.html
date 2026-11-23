@@ -149,7 +149,7 @@
           <button class="cta-btn cta-secondary" type="button" id="jumpOverviewVideo">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
             <span>Demo Video</span>
-            <span class="cta-meta">3:00</span>
+            <span class="cta-meta">2:24</span>
           </button>
 
           <a class="cta-btn cta-secondary" href="#bibtex">
@@ -203,7 +203,7 @@
           <div class="stage-tabs" role="tablist" aria-label="Hero showcase video modes">
             <button class="stage-tab active" role="tab" aria-selected="true" data-hero-mode="overview">
               <span class="tab-dot dot-amber"></span>
-              3-Min Narrated Overview
+              Narrated Overview (2:24)
             </button>
             <button class="stage-tab" role="tab" aria-selected="false" data-hero-mode="mechanism">
               <span class="tab-dot dot-body"></span>
@@ -214,7 +214,7 @@
               5-Stage Autonomous Rollout
             </button>
           </div>
-          <div class="stage-meta-pill" id="heroMetaBadge">1080p &middot; 3:00 &middot; English Narration &amp; Subtitles</div>
+          <div class="stage-meta-pill" id="heroMetaBadge">1080p &middot; 2:24 &middot; English Narration &amp; Subtitles</div>
         </div>
 
         <div class="cinema-shell" id="heroCinema">
@@ -222,8 +222,8 @@
             <video
               id="heroVideo"
               class="cinema-video"
-              src="assets/videos/zeta0_overview_public.mp4"
-              poster="assets/posters/zeta0_overview_public.jpg"
+              src="assets/videos/zeta0_overview_public.mp4?v=10"
+              poster="assets/posters/zeta0_overview_public.jpg?v=10"
               playsinline
               preload="metadata"
             ></video>
@@ -236,7 +236,7 @@
             <!-- Top-left floating caption pill -->
             <div class="cinema-badge-tl" id="heroBadgeTL">
               <span class="pulse-dot"></span>
-              <span id="heroCaptionTitle">Full Narrated Presentation (3:00)</span>
+              <span id="heroCaptionTitle">Full Narrated Presentation (2:24)</span>
             </div>
           </div>
 
@@ -258,7 +258,7 @@
                   <svg class="icon-muted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
                   <svg class="icon-unmuted" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
                 </button>
-                <span class="hud-time" id="heroTime">0:00 / 3:00</span>
+                <span class="hud-time" id="heroTime">0:00 / 2:24</span>
               </div>
               <div class="hud-right">
                 <div class="speed-group" data-speed-for="hero">
@@ -274,22 +274,23 @@
             </div>
           </div>
 
-          <!-- Chapter jump strip (visible by default for 3-min overview) -->
+          <!-- Chapter jump strip (visible by default for narrated overview) -->
           <div class="chapter-strip" id="heroChapterStrip">
             <span class="chapter-label">Chapters:</span>
             <button class="chapter-pill active" data-seek="0">0:00 Hook</button>
-            <button class="chapter-pill" data-seek="13.8">0:14 Motivation</button>
-            <button class="chapter-pill" data-seek="36.6">0:37 Foresight</button>
-            <button class="chapter-pill" data-seek="47.6">0:48 Method</button>
-            <button class="chapter-pill" data-seek="91.1">1:31 Simulation</button>
-            <button class="chapter-pill" data-seek="118.7">1:59 Real-World</button>
-            <button class="chapter-pill" data-seek="148.4">2:28 Results &amp; Ablations</button>
+            <button class="chapter-pill" data-seek="12.4">0:12 Motivation</button>
+            <button class="chapter-pill" data-seek="32.2">0:32 Foresight</button>
+            <button class="chapter-pill" data-seek="39.6">0:40 Method</button>
+            <button class="chapter-pill" data-seek="71.6">1:12 Simulation</button>
+            <button class="chapter-pill" data-seek="83.4">1:23 Body Forecast</button>
+            <button class="chapter-pill" data-seek="92.6">1:33 Real-World</button>
+            <button class="chapter-pill" data-seek="117.8">1:58 Results &amp; Ablations</button>
           </div>
 
           <!-- Editorial footer under cinema -->
           <div class="cinema-caption-bar">
             <p id="heroDesc">
-              Complete 3-minute walkthrough of <strong>&zeta;<sub>0</sub></strong>: motivation, joint scene-and-body future latent representation, dual-response transfer, HumanoidArena simulation, six real-world Unitree G1 tasks, and ablation analysis.
+              Complete narrated walkthrough of <strong>&zeta;<sub>0</sub></strong>: motivation, joint scene-and-body future latent representation, dual-response transfer, HumanoidArena simulation, six real-world Unitree G1 tasks, and ablation analysis.
             </p>
           </div>
         </div>
@@ -809,6 +810,6 @@
   <!-- Subtle Toast Notification -->
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="app.js?v=9"></script>
+  <script src="app.js?v=10"></script>
 </body>
 </html>
