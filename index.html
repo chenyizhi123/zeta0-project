@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500;1,6..72,400&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=8" />
+  <link rel="stylesheet" href="styles.css?v=9" />
 </head>
 <body>
   <!-- Sticky Top Navigation -->
@@ -33,6 +33,10 @@
         <a href="#bibtex">BibTeX</a>
       </nav>
       <div class="nav-actions">
+        <a class="nav-ghost-btn" href="https://chenyizhi123.github.io/" target="_blank" rel="noopener" title="Yizhi Chen — Personal Academic Homepage">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Author Page
+        </a>
         <a class="nav-pdf-btn" href="https://arxiv.org/abs/2611.29277" target="_blank" rel="noopener">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
           arXiv
@@ -57,7 +61,7 @@
         <!-- Authors (interactive affiliation highlight) -->
         <div class="authors-block" id="authorsBlock">
           <div class="authors-list">
-            <span class="author" data-affs="1,2">Yizhi Chen<sup>1,2,*</sup></span>,
+            <a class="author author-link" data-affs="1,2" href="https://chenyizhi123.github.io/" target="_blank" rel="noopener" title="Yizhi Chen — Academic Homepage">Yizhi Chen<sup>1,2,*</sup></a>,
             <span class="author" data-affs="3,2">Zhanxiang Cao<sup>3,2,*</sup></span>,
             <span class="author" data-affs="3">Yitong Wang<sup>3</sup></span>,
             <span class="author" data-affs="4">Junyu Liu<sup>4</sup></span>,
@@ -785,6 +789,7 @@
         <span>Joint Scene and Body Foresight in Humanoid Control</span>
       </div>
       <div class="footer-links">
+        <a href="https://chenyizhi123.github.io/" target="_blank" rel="noopener">Author Homepage</a>
         <a href="https://arxiv.org/abs/2611.29277" target="_blank" rel="noopener">arXiv</a>
         <a href="https://github.com/chenyizhi123/Zeta0" target="_blank" rel="noopener">Code</a>
         <a href="https://huggingface.co/datasets/SII-yizhi/zeta0-real-dataset" target="_blank" rel="noopener">HF Dataset</a>

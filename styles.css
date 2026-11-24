@@ -164,6 +164,33 @@ a {
   background: rgba(15, 23, 42, 0.05);
 }
 
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-ghost-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong, rgba(15, 23, 42, 0.14));
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--ink);
+  transition: transform 0.15s ease, border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.nav-ghost-btn:hover {
+  border-color: var(--scene);
+  color: var(--scene);
+  background: var(--scene-soft);
+  transform: translateY(-1px);
+}
+
 .nav-pdf-btn {
   display: inline-flex;
   align-items: center;
@@ -264,6 +291,21 @@ a {
 .author.hl {
   background: var(--scene-soft);
   color: var(--ink);
+}
+
+.author-link {
+  cursor: pointer;
+  color: var(--ink);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgba(38, 91, 145, 0.42);
+  text-underline-offset: 3px;
+}
+
+.author-link:hover {
+  color: var(--scene);
+  background: var(--scene-soft);
+  text-decoration-color: var(--scene);
 }
 
 .affiliations-logos {
